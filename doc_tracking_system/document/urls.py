@@ -6,5 +6,5 @@ urlpatterns = [
     path('list/', views.document_list, name='document_list'),
     path('forward/<int:pk>/', views.forward_document, name='forward_document'),
     path('<int:pk>/', views.document_detail, name='document_detail'),
-    path('dashboard/', views.dashboard, name='dashboard'),
+    path('', views.dashboard, name='dashboard'),
 ]

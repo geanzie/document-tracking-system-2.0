@@ -56,7 +56,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'middleware.session_timeout.SessionTimeoutMiddleware',
+    'allauth.account.middleware.AccountMiddleware',  # Add this middleware
+    'users.middleware.session_timeout.SessionTimeoutMiddleware',  # Correct path
 ]
 
 ROOT_URLCONF = 'doc_tracking_system.urls'
@@ -64,7 +65,7 @@ ROOT_URLCONF = 'doc_tracking_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,8 +86,15 @@ WSGI_APPLICATION = 'doc_tracking_system.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'doktrack3.0',      # Replace with your database name
+        'USER': 'root',            # Replace with your MySQL username
+        'PASSWORD': 'T!meMachine617',        # Replace with your MySQL password
+        'HOST': 'localhost',                # Or your database host, 'localhost' if on the same server
+        'PORT': '3306',                     # MySQL’s default port is 3306
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",  # Enforces data integrity
+        },
     }
 }
 
@@ -133,4 +141,23 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/users/login/'
-LOGIN_REDIRECT_URL = '/dashboard/'
+LOGIN_REDIRECT_URL = '/document/dashboard/'
+
+# Django-Allauth settings
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # Default backend
+    'allauth.account.auth_backends.AuthenticationBackend',  # Allauth backend
+)
+
+SITE_ID = 1  # Update to match the Site ID you configured
+
+# Login redirection
+LOGOUT_REDIRECT_URL = '/users/login/'  # Optional
+ACCOUNT_LOGOUT_REDIRECT_URL = '/users/login/'
+
+# Email verification
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "none"  # Set to 'mandatory' for production
+
+# settings.py
+SESSION_TIMEOUT = 300  # Time in seconds (e.g., 300 seconds = 5 minutes)
