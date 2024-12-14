@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Notifications</h1>
+<ul>
+    {% for notification in notifications %}
+    <li>
+        {% if not notification.is_read %}
+        <strong>{{ notification.message }}</strong>
+        {% else %}
+        {{ notification.message }}
+        {% endif %}
+        <a href="{% url 'notification_detail' notification.id %}">View</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Dashboard</h1>
+    <div class="row">
+        <!-- Cards for Document Status Summary -->
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Pending</h5>
+                    <p class="card-text">{{ pending_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">In Process</h5>
+                    <p class="card-text">{{ in_process_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Forwarded</h5>
+                    <p class="card-text">{{ forwarded_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Returned</h5>
+                    <p class="card-text">{{ returned_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <h2 class="mt-4">Recent Activity</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Document</th>
+                <th>Status</th>
+                <th>Updated By</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activity in recent_activities %}
+            <tr>
+                <td>{{ activity.document.title }}</td>
+                <td>{{ activity.get_status_display }}</td>
+                <td>{{ activity.updated_by }}</td>
+                <td>{{ activity.timestamp }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No recent activity found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

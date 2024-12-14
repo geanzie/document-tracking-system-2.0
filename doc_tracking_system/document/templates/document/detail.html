@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Document Details</h1>
+<p><strong>Title:</strong> {{ document.title }}</p>
+<p><strong>Category:</strong> {{ document.get_category_display }}</p>
+<p><strong>Sensitivity:</strong> {{ document.get_sensitivity_display }}</p>
+<p><strong>Visibility:</strong> {{ document.get_visibility_display }}</p>
+<p><strong>Created By:</strong> {{ document.created_by }}</p>
+<p><strong>Created At:</strong> {{ document.created_at }}</p>
+<p><strong>Status:</strong> {{ document.documentstatus_set.last.status }}</p>
+
+<a href="{% url 'document_list' %}" class="btn btn-secondary">Back to List</a>
+{% endblock %}
