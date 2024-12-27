@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Document List</h1>
+<ul>
+    {% for document in documents %}
+        <li>{{ document.title }} - {{ document.category }} - {{ document.status }}</li>
+    {% endfor %}
+</ul>
 <table class="table">
     <tr>
         <th>Title</th>

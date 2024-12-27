@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Document, DocumentStatus
-from .forms import DocumentForm
+from .forms import DocumentForm, DocumentSearchForm
 
 
 @login_required
@@ -58,8 +58,18 @@ def upload_document(request):
 
 @login_required
 def document_list(request):
+    form = DocumentSearchForm(request.GET or None)
     documents = Document.objects.filter(forwarded_to=request.user.userprofile.department)
-    return render(request, 'document/list.html', {'documents': documents})
+
+    if form.is_valid():
+        if form.cleaned_data['title']:
+            documents = documents.filter(title__icontains=form.cleaned_data['title'])
+        if form.cleaned_data['category']:
+            documents = documents.filter(category__icontains=form.cleaned_data['category'])
+        if form.cleaned_data['status']:
+            documents = documents.filter(status__icontains=form.cleaned_data['status'])
+
+    return render(request, 'document/list.html', {'form': form,'documents': documents})
 
 @login_required
 def forward_document(request, pk):
